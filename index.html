@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>ChatBot</title>
+    <style>
+      @keyframes dotPulse {
+        0%,
+        44% {
+          transform: translateY(0);
+        }
+        28% {
+          opacity: 0.4;
+          transform: translateY(-4px);
+        }
+        44% {
+          opacity: 0.2;
+        }
+      }
+      .message-input:valid ~ .chat-controls #send-message {
+        display: block;
+      }
+    </style>
+  </head>
+  <body
+    class="flex justify-center items-center min-h-[100vh] bg-gradient-to-t from-red-600 to-white"
+  >
+    <div
+      class="chatbot-popup relative w-[420px] bg-white overflow-hidden rounded-2xl shadow-[0px_0px_128px_0px_rgba(0,0,0,0.1),0px_32px_64px_-48px_rgba(0,0,0,0.5)]"
+    >
+      <div
+        class="chat-header flex items-center justify-between bg-red-600 py-[15px] px-[22px]"
+      >
+        <div class="header-info flex items-center gap-[10px]">
+          <i
+            class="fa-brands fa-bots text-center text-[25px] w-[40px] h-[40px] place-content-center rounded-[50%] bg-white p-[6px] text-red-600 shrink-0"
+          ></i>
+          <h2 class="logo-text text-white text-[1.31rem] font-semibold">
+            ChatBot
+          </h2>
+        </div>
+        <button
+          id="close-chatbot"
+          class="border-none text-white h-[40px] w-[40px] rounded-[50%] duration-200 ease hover:bg-red-300 text-[1.2rem] mr-[-10px] place-content-center flex items-center cursor-pointer"
+        >
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+
+      <div
+        class="chat-body py-[25px] px-[22px] flex gap-[20px] h-[460px] flex-col overflow-y-auto mb-[82px]"
+        style="scrollbar-width: thin; scrollbar-color: #ccccf5 transparent"
+      >
+        <div class="message bot-message flex gap-[11px] items-center">
+          <i
+            class="fa-brands fa-bots text-center text-[25px] w-[40px] h-[40px] self-end place-content-center rounded-[50%] bg-red-600 p-[6px] text-white shrink-0 mb-[4px]"
+          ></i>
+          <div
+            class="message-text py-[12px] px-[16px] max-w-[75%] text-[0.9rem] bg-slate-100 rounded-[13px_13px_13px_3px]"
+          >
+            Hey there 💕 <br />
+            How can I help you today?
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="chat-footer absolute bottom-0 w-full bg-white p-[15px_22px_20px]"
+      >
+        <form
+          action="#"
+          class="chat-form flex items-center bg-white rounded-[32px] outline outline-[1px] outline-[#CCCCE5] focus-within:outline focus-within:outline-[2px] focus-within:outline-red-600"
+        >
+          <textarea
+            placeholder="Message..."
+            required
+            class="message-input border-non outline-none h-[47px] w-full text-[0.9rem] resize-none p-[13px_0_12px_18px] rounded-[inherit]"
+          ></textarea>
+          <div
+            class="chat-controls flex items-center gap-[3px] self-end h-[47px] pr-[6px]"
+          >
+            <button
+              type="button"
+              class="h-[35px] w-[35px] border-none text-[1.15rem] cursor-pointer text-red-600 rounded-[50%] hover:bg-slate-100 duration-200 ease"
+            >
+              <i class="fa-regular fa-face-frown"></i>
+            </button>
+            <div class="file-upload-wrapper">
+              <input type="file" accept="images/*" id="file-input" hidden />
+              <button
+                type="button"
+                id="file-upload"
+                class="h-[35px] w-[35px] border-none text-[1.15rem] cursor-pointer text-red-600 rounded-[50%] hover:bg-slate-100 duration-200 ease"
+              >
+                <i class="fa-solid fa-paperclip"></i>
+              </button>
+            </div>
+            <button
+              type="submit"
+              class="h-[35px] w-[35px] border-none text-[1.15rem] cursor-pointer text-white rounded-[50%] hover:bg-red-700 bg-red-600 duration-200 ease hidden"
+              id="send-message"
+            >
+              <i class="fa-solid fa-arrow-up"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
