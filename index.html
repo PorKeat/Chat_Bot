@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close"
     />
-    <title>ChatBot</title>
+    <title>AI Chatbot | AlexKGM</title>
     <style>
       @keyframes dotPulse {
         0%,
@@ -46,13 +46,34 @@
       #file-upload.hidden {
         display: none;
       }
+      em-emoji-picker {
+        position: absolute;
+        left: 50%;
+        top: -337px;
+        width: 100%;
+        max-width: 350px;
+        max-height: 330px;
+        visibility: hidden;
+        transform: translateX(-50%);
+      }
+      body.show-emoji-picker em-emoji-picker {
+        visibility: visible;
+      }
     </style>
   </head>
   <body
     class="flex justify-center items-center min-h-[100vh] bg-gradient-to-t from-red-600 to-white"
   >
+    <button
+      id="chatbot-toggler"
+      class="fixed bottom-[30px] right-[35px] border-none h-[50px] w-[50px] cursor-pointer rounded-[50%] bg-red-600 flex items-center justify-center"
+    >
+      <i class="fa-regular fa-message text-white absolute"></i>
+      <i class="fa-solid fa-xmark text-white absolute opacity-0"></i>
+    </button>
+
     <div
-      class="chatbot-popup relative w-[420px] bg-white overflow-hidden rounded-2xl shadow-[0px_0px_128px_0px_rgba(0,0,0,0.1),0px_32px_64px_-48px_rgba(0,0,0,0.5)]"
+      class="chatbot-popup fixed right-[35px] bottom-[90px] w-[420px] bg-white overflow-hidden rounded-2xl shadow-[0px_0px_128px_0px_rgba(0,0,0,0.1),0px_32px_64px_-48px_rgba(0,0,0,0.5)]"
     >
       <div
         class="chat-header flex items-center justify-between bg-red-600 py-[15px] px-[22px]"
@@ -95,7 +116,7 @@
       >
         <form
           action="#"
-          class="chat-form flex items-center bg-white rounded-[32px] outline outline-[1px] outline-[#CCCCE5] focus-within:outline focus-within:outline-[2px] focus-within:outline-red-600"
+          class="chat-form flex items-center bg-white rounded-[32px] outline outline-[1px] outline-[#CCCCE5] focus-within:outline focus-within:outline-[2px] focus-within:outline-red-600 relative"
         >
           <textarea
             placeholder="Message..."
@@ -106,6 +127,7 @@
             class="chat-controls flex items-center gap-[3px] self-end h-[47px] pr-[6px]"
           >
             <button
+              id="emoji-picker"
               type="button"
               class="h-[35px] w-[35px] border-none text-[1.15rem] cursor-pointer text-red-600 rounded-[50%] hover:bg-slate-100 duration-200 ease"
             >
@@ -148,6 +170,7 @@
         </form>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
