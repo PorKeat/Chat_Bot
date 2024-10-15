@@ -21,6 +21,9 @@ const userData = {
   },
 };
 
+const chatHistory = [];
+const initialInputHeight = messageInput.scrollHeight;
+
 const createMessageElement = (content, ...classes) => {
   const div = document.createElement("div");
   div.classList.add("message", ...classes);
@@ -30,19 +33,19 @@ const createMessageElement = (content, ...classes) => {
 
 const generateBotResponse = async (incomingMessageDiv) => {
   const messageElement = incomingMessageDiv.querySelector(".message-text");
+  chatHistory.push({
+    role: "user",
+    parts: [
+      { text: userData.message },
+      ...(userData.file.data ? [{ inline_data: userData.file }] : []),
+    ],
+  });
 
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      contents: [
-        {
-          parts: [
-            { text: userData.message },
-            ...(userData.file.data ? [{ inline_data: userData.file }] : []),
-          ],
-        },
-      ],
+      contents: chatHistory,
     }),
   };
 
@@ -54,6 +57,10 @@ const generateBotResponse = async (incomingMessageDiv) => {
     const apiResponseText = data?.candidates[0]?.content?.parts[0]?.text.trim();
     console.log(data);
     messageElement.innerHTML = apiResponseText;
+    chatHistory.push({
+      role: "model",
+      parts: [{text: userData.apiResponseText}],
+    });
   } catch (error) {
     console.log(error);
     messageElement.innerHTML = error;
@@ -148,6 +155,13 @@ messageInput.addEventListener("keydown", (x) => {
   }
 });
 
+messageInput.addEventListener("input", () => {
+  messageInput.style.height = `${initialInputHeight}px`;
+  messageInput.style.height = `${messageInput.scrollHeight}px`;
+  document.querySelector(".chat-form").style.borderRadius =
+    messageInput.scrollHeight > initialInputHeight ? "15px" : "32px";
+});
+
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (!file) return;
@@ -210,15 +224,23 @@ document
 const toggleChatbot = () => {
   const messageIcon = document.getElementById("chatbot-icon");
   const closeIcon = document.getElementById("close-icon");
+  const isMobile = window.innerWidth <= 640;
 
   if (chatbotPopup.classList.contains("opacity-0")) {
     chatbotPopup.classList.remove("opacity-0", "scale-[0.1]");
-    chatbotPopup.classList.add("opacity-100", "scale-100");
+    chatbotPopup.classList.add("opacity-100", "scale-100", "z-30");
     messageIcon.classList.add("opacity-0");
     closeIcon.classList.remove("opacity-0");
     chatbotToggler.classList.add("rotate-[-90deg]");
+
+    if (isMobile) {
+      previewImage.addEventListener("click", () => {
+        previewImage.src = "";
+        previewImage.classList.add("hidden");
+      });
+    }
   } else {
-    chatbotPopup.classList.remove("opacity-100", "scale-100");
+    chatbotPopup.classList.remove("opacity-100", "scale-100", "z-30");
     chatbotPopup.classList.add("opacity-0", "scale-[0.1]");
     messageIcon.classList.remove("opacity-0");
     closeIcon.classList.add("opacity-0");
