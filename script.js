@@ -6,6 +6,9 @@ const fileInput = document.getElementById("file-input");
 const fileUploadButton = document.getElementById("file-upload");
 const fileCancelButton = document.getElementById("file-cancel");
 const previewImage = document.getElementById("preview-image");
+const chatbotToggler = document.getElementById("chatbot-toggler");
+const chatbotPopup = document.querySelector(".chatbot-popup");
+const closeChatbot = document.getElementById("close-chatbot");
 
 const API_KEY = "AIzaSyBBftvnIi15VSCwoz39tUhCuZELpLNSVr0";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
@@ -203,3 +206,25 @@ sendMessageButton.addEventListener("click", (x) => handleOutgoingMessage(x));
 document
   .querySelector("#file-upload")
   .addEventListener("click", () => fileInput.click());
+
+const toggleChatbot = () => {
+  const messageIcon = document.getElementById("chatbot-icon");
+  const closeIcon = document.getElementById("close-icon");
+
+  if (chatbotPopup.classList.contains("opacity-0")) {
+    chatbotPopup.classList.remove("opacity-0", "scale-[0.1]");
+    chatbotPopup.classList.add("opacity-100", "scale-100");
+    messageIcon.classList.add("opacity-0");
+    closeIcon.classList.remove("opacity-0");
+    chatbotToggler.classList.add("rotate-[-90deg]");
+  } else {
+    chatbotPopup.classList.remove("opacity-100", "scale-100");
+    chatbotPopup.classList.add("opacity-0", "scale-[0.1]");
+    messageIcon.classList.remove("opacity-0");
+    closeIcon.classList.add("opacity-0");
+    chatbotToggler.classList.remove("rotate-[-90deg]");
+  }
+};
+
+chatbotToggler.addEventListener("click", toggleChatbot);
+closeChatbot.addEventListener("click", toggleChatbot);
