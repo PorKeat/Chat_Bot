@@ -54,17 +54,22 @@ const generateBotResponse = async (incomingMessageDiv) => {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error.message);
 
-    const apiResponseText = data?.candidates[0]?.content?.parts[0]?.text.trim();
-    console.log(data);
+    const apiResponseText = data.candidates[0].content.parts[0].text
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .trim();
     messageElement.innerHTML = apiResponseText;
     chatHistory.push({
       role: "model",
-      parts: [{text: userData.apiResponseText}],
+      parts: [{ text: apiResponseText }],
     });
   } catch (error) {
-    console.log(error);
-    messageElement.innerHTML = error;
-    messageElement.style.color = "#ff0000";
+    const regex = /what\s*is\s*love\??/i; // Create a regex pattern
+
+    const check = regex.test(userData.message);
+    messageElement.innerHTML = check
+      ? "How can I know about love if I'm still single?😭"
+      : error;
+    messageElement.style.color = check ? "#000000" : "#ff0000";
   } finally {
     userData.file = {};
     incomingMessageDiv.classList.remove("thinking");
@@ -108,6 +113,7 @@ const handleOutgoingMessage = (x) => {
 
   previewImage.src = "";
   previewImage.classList.add("hidden");
+  document.body.classList.remove("show-emoji-picker");
 
   setTimeout(() => {
     const messageContent = `
