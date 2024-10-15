@@ -1,9 +1,13 @@
 const messageInput = document.querySelector(".message-input");
 const chatBody = document.querySelector(".chat-body");
 const sendMessageButton = document.querySelector("#send-message");
-const fileInput = document.querySelector("#file-input");
+const fileUploadWrapper = document.querySelector(".file-upload-wrapper");
+const fileInput = document.getElementById("file-input");
+const fileUploadButton = document.getElementById("file-upload");
+const fileCancelButton = document.getElementById("file-cancel");
+const previewImage = document.getElementById("preview-image");
 
-const API_KEY = "AIzaSyAyNemnRnv8H3xhEMHuPE1_3WmTVG6kquQ";
+const API_KEY = "AIzaSyBBftvnIi15VSCwoz39tUhCuZELpLNSVr0";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
 const userData = {
@@ -52,6 +56,7 @@ const generateBotResponse = async (incomingMessageDiv) => {
     messageElement.innerHTML = error;
     messageElement.style.color = "#ff0000";
   } finally {
+    userData.file = {};
     incomingMessageDiv.classList.remove("thinking");
     chatBody.scrollTo({
       top: chatBody.scrollHeight,
@@ -90,6 +95,9 @@ const handleOutgoingMessage = (x) => {
     top: chatBody.scrollHeight,
     behavior: "smooth",
   });
+
+  previewImage.src = "";
+  previewImage.classList.add("hidden");
 
   setTimeout(() => {
     const messageContent = `
@@ -142,8 +150,13 @@ fileInput.addEventListener("change", () => {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = (x) => {
-    const base64String = x.target.result.split(",")[1];
+
+  reader.onload = (event) => {
+    const imgTag = fileUploadWrapper.querySelector("img");
+    imgTag.src = event.target.result;
+    imgTag.classList.remove("hidden");
+
+    const base64String = event.target.result.split(",")[1];
 
     userData.file = {
       data: base64String,
@@ -154,6 +167,14 @@ fileInput.addEventListener("change", () => {
   };
 
   reader.readAsDataURL(file);
+});
+
+fileCancelButton.addEventListener("click", () => {
+  previewImage.src = "";
+  previewImage.classList.add("hidden");
+  fileUploadButton.classList.remove("hidden");
+  fileCancelButton.classList.add("hidden");
+  fileInput.value = "";
 });
 
 sendMessageButton.addEventListener("click", (x) => handleOutgoingMessage(x));

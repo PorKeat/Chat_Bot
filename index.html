@@ -11,6 +11,10 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close"
+    />
     <title>ChatBot</title>
     <style>
       @keyframes dotPulse {
@@ -28,6 +32,19 @@
       }
       .message-input:valid ~ .chat-controls #send-message {
         display: block;
+      }
+
+      #file-cancel {
+        display: none;
+      }
+      #preview-image:hover ~ #file-cancel {
+        display: block;
+      }
+      #preview-image:hover {
+        display: none;
+      }
+      #file-upload.hidden {
+        display: none;
       }
     </style>
   </head>
@@ -94,19 +111,35 @@
             >
               <i class="fa-regular fa-face-frown"></i>
             </button>
-            <div class="file-upload-wrapper">
-              <input type="file" accept="images/*" id="file-input" hidden />
+            <div class="file-upload-wrapper relative w-[35px] h-[35px]">
+              <input
+                type="file"
+                accept="image/*"
+                id="file-input"
+                class="hidden"
+              />
               <button
                 type="button"
                 id="file-upload"
-                class="h-[35px] w-[35px] border-none text-[1.15rem] cursor-pointer text-red-600 rounded-[50%] hover:bg-slate-100 duration-200 ease"
+                class="absolute h-[35px] w-[35px] border-none text-[1.15rem] cursor-pointer text-red-600 rounded-full hover:bg-slate-100 duration-200 ease"
               >
                 <i class="fa-solid fa-paperclip"></i>
+              </button>
+              <img
+                src=""
+                id="preview-image"
+                class="absolute w-full h-full object-cover rounded-full hidden"
+              />
+              <button
+                id="file-cancel"
+                class="absolute h-[35px] w-[35px] text-[1.15rem] cursor-pointer text-red-600 rounded-full bg-slate-100 duration-200 ease hidden"
+              >
+                <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
             <button
               type="submit"
-              class="h-[35px] w-[35px] border-none text-[1.15rem] cursor-pointer text-white rounded-[50%] hover:bg-red-700 bg-red-600 duration-200 ease hidden"
+              class="h-[35px] w-[35px] border-none text-[1.15rem] cursor-pointer text-white rounded-full hover:bg-red-700 bg-red-600 duration-200 ease hidden"
               id="send-message"
             >
               <i class="fa-solid fa-arrow-up"></i>
